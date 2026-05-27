@@ -21,10 +21,10 @@ const profile = {
   location: "Atlanta, GA Area",
   email: "dvega974@gmail.com",
   github: "https://github.com/dvega974",
-  resumeUrl: "/DVegaResume.pdf",
+  resumeUrl: "/Daniel_Vega_Resume.pdf",
   headline: "Building practical software through projects, coursework, and hands-on technical skills.",
   summary:
-    "I am a software development student at Georgia Gwinnett College building full-stack web apps, dashboards, automation tools, and database-backed projects. I am open to tech roles where I can apply my skills in software development, QA testing, IT support, databases, and problem-solving."
+    "I am a software development graduate from Georgia Gwinnett College building full-stack web apps, dashboards, automation tools, and database-backed projects! I am open to tech roles where I can apply my skills in software development, QA testing, IT support, databases, and problem-solving."
 };
 
 const roleTargets = [
@@ -44,22 +44,28 @@ const projects = [
     description:
       "A personal device value tracker for organizing electronics, gaming devices, purchase prices, estimated resale values, storage models, editions, and notes.",
     problem:
-      "I wanted a better way to track the value of my personal electronics and gaming collection instead of keeping everything scattered across notes or memory.",
+      "I wanted a better way to track the value of my gaming handhelds and gaming collection instead of keeping everything scattered across notes or memory.",
     solution:
-      "I built a dashboard that organizes device information, purchase prices, estimated current values, storage sizes, editions, conditions, and notes in one place.",
+      "I built a dashboard that organizes device information, purchase prices, estimated current values, storage sizes, editions, conditions, and notes all in one place.",
     learned:
-      "This project helped me practice Next.js, React, TypeScript, Tailwind CSS, dashboard design, reusable data structures, and deployment with Vercel.",
-    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"],
+      "This project helped me hone my skills in Next.js, React, TypeScript, Tailwind CSS, dashboard design, reusable data structures, and deployment with Vercel.",
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Firebase"],
     highlights: [
       "Tracks device details, conditions, purchase prices, and estimated current values.",
       "Compares original purchase cost against possible resale value.",
-      "Uses a clean dashboard layout for quick collection viewing."
+      "Uses a clean dashboard layout for quick collection viewing.",
+            "Stores data in a firestore database."
+
     ],
     icon: Database,
     featured: true,
     liveUrl: "https://devicemanager-iota.vercel.app/",
     githubUrl: "https://github.com/DanielS-Moon/DeviceManager",
-    screenshot: ""
+    screenshots: [
+  { src: "/screenshots/device-manager-dashboard.png", label: "Dashboard" },
+  { src: "/screenshots/device-manager-details.png", label: "Device Details" },
+  { src: "/screenshots/device-manager-values.png", label: "Value Tracking" }
+]
   },
   {
     title: "BabyBlooming",
@@ -81,9 +87,13 @@ const projects = [
     ],
     icon: Smartphone,
     featured: false,
-    liveUrl: "#",
+    liveUrl: "https://parentingapp.vercel.app/",
     githubUrl: "https://github.com/wilhelmmxd/BabyBlooming",
-    screenshot: ""
+    screenshots: [
+      { src: "/screenshots/babyblooming-login.png", label: "Login" },
+      { src: "/screenshots/babyblooming-dashboard.png", label: "Dashboard" },
+      { src: "/screenshots/babyblooming-logs.png", label: "Daily Logs" }
+    ]
   },
   {
     title: "Automated Data Collection & QA Testing",
@@ -107,7 +117,11 @@ const projects = [
     featured: false,
     liveUrl: "#",
     githubUrl: "#",
-    screenshot: ""
+    screenshots: [
+      { src: "/screenshots/automation-code.png", label: "Test Code" },
+      { src: "/screenshots/automation-results.png", label: "Test Results" },
+      { src: "/screenshots/automation-database.png", label: "Database" }
+    ]
   }
 ];
 
@@ -136,6 +150,11 @@ const coursework = [
   "Object-Oriented Programming",
   "Database Systems",
   "Software Testing",
+  "Data Structures and Algorithms",
+  "Cloud Computing",
+  "Software Project Management",
+  "User Interface Design",
+  "Software Quality Assurance",
   "Mobile App Development"
 ];
 
@@ -184,22 +203,29 @@ function ContactLink({ href, icon: Icon, children }: { href: string; icon: typeo
   );
 }
 
-function ScreenshotPreview({ title, screenshot }: { title: string; screenshot: string }) {
-  if (screenshot) {
-    return (
-      <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#07111f]">
-        <img src={screenshot} alt={`${title} screenshot`} className="h-64 w-full object-cover" />
-      </div>
-    );
-  }
-
+function ScreenshotGallery({
+  title,
+  screenshots
+}: {
+  title: string;
+  screenshots: { src: string; label: string }[];
+}) {
   return (
-    <div className="flex h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-white/15 bg-[#07111f]/70 p-6 text-center">
-      <ImageIcon className="h-9 w-9 text-[#d4af37]" />
-      <p className="mt-4 font-semibold text-slate-200">Project screenshot placeholder</p>
-      <p className="mt-2 max-w-sm text-sm leading-6 text-slate-500">
-        Add a screenshot later by placing an image in the public folder and updating the screenshot value for {title}.
-      </p>
+    <div className="space-y-3">
+      <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#07111f]">
+        <img src={screenshots[0].src} alt={`${title} ${screenshots[0].label} screenshot`} className="h-64 w-full object-cover" />
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {screenshots.map((screenshot) => (
+          <div key={screenshot.src} className="overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
+            <img src={screenshot.src} alt={`${title} ${screenshot.label} screenshot`} className="h-24 w-full object-cover" />
+            <p className="border-t border-white/10 px-3 py-2 text-xs font-medium text-slate-400">
+              {screenshot.label}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -240,7 +266,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             ))}
           </div>
 
-          <ScreenshotPreview title={project.title} screenshot={project.screenshot} />
+          <ScreenshotGallery title={project.title} screenshots={project.screenshots} />
         </div>
 
         <div className="space-y-6">
@@ -316,7 +342,7 @@ export default function Portfolio() {
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#d4af37]/80">Portfolio</p>
                 <h1 className="mt-4 text-3xl font-bold tracking-tight">{profile.name}</h1>
                 <p className="mt-4 leading-7 text-slate-400">
-                  Software development student focused on full-stack apps, dashboards, QA automation, databases, and practical technology projects.
+                  Software development graduate focused on full-stack apps, dashboards, QA automation, databases, and practical technology projects.
                 </p>
               </div>
 
@@ -457,7 +483,7 @@ export default function Portfolio() {
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold text-slate-100">Bachelor’s in Software Development</h3>
-                      <p className="mt-2 text-slate-400">Expected graduation: May 2026</p>
+                      <p className="mt-2 text-slate-400">May 2026 Graduation</p>
                       <p className="mt-4 leading-7 text-slate-300">
                         Academic experience includes web apps, automation projects, database-backed tools, testing, object-oriented programming, and mobile-ready applications.
                       </p>
